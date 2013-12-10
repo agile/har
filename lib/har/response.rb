@@ -74,8 +74,10 @@ module HAR
     end
     alias :other? :is_other?
 
-    def has_content?(c)
+    def has_content?(c=nil)
       case c
+      when nil then
+        !!(content.text && content.text.to_s.size > 0)
       when Regexp then
         !!(content.text && content.text.to_s =~ c)
       else

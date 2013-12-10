@@ -152,6 +152,19 @@ module HAR
         response.content.stub(:text).and_return('welcome to my hello world page')
         response.should_not have_content(/goodbye world/)
       end
+
+      context "and expression nil" do
+        it "should return true if there's any content" do
+          response.content.stub(:text).and_return('welcome to my hello world page')
+          response.should have_content
+        end
+        it "should return false if there's not any content" do
+          response.content.stub(:text).and_return(nil)
+          response.should_not have_content
+        end
+      end
+    end
+
     end
 
     context "redirected_to" do
