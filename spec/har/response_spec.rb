@@ -180,6 +180,57 @@ module HAR
       end
     end
 
+    context "has_header?(:name,:value)" do
+      before(:each) do
+        headers = [
+          {"name" => "Location", "value" => "http://localhost/"}
+        ]
+        response.stub(:headers).and_return(headers)
+      end
+
+      context "given no name or value" do
+        it "should be true if there's any headers" do
+          response.should have_headers
+        end
+        it "should not claim to have any headers if it does not" do
+          response.stub(:headers).and_return([])
+          response.should_not have_headers
+          response.stub(:headers).and_return(nil)
+          response.should_not have_headers
+        end
+      end
+
+      context "given only name" do
+        it "should be true if there's any headers matching name" do
+          response.should have_header(:name => "Location")
+          response.should have_header(:name => /LOCATION/i)
+        end
+        it "should not claim to have a header it does not have" do
+          response.should_not have_header(:name => "fred")
+        end
+      end
+
+      context "given only value" do
+        it "should be true if there's any headers matching value" do
+          response.should have_header(:value => "http://localhost/")
+          response.should have_header(:value => /localhost/i)
+        end
+        it "should be false if there's no headers match value" do
+          response.should_not have_header(:value => "not here!")
+        end
+      end
+
+      context "given a name and a value" do
+        it "should be true if matching header name is found with matching value" do
+          response.should have_header(:name => :location, :value => /localhost/)
+        end
+        it "should be false if matching header name is found with non-matching value" do
+          response.should_not have_header(:name => :location, :value => /remotehost/)
+        end
+        it "should be false if matching value is found with non-matching name" do
+          response.should_not have_header(:name => :fred, :value => /localhost/)
+        end
+      end
     end
 
     context "redirected_to" do

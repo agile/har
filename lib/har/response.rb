@@ -88,10 +88,53 @@ module HAR
     alias :match_content? :has_content?
     alias :matches_content? :has_content?
 
+    def has_header?(opts={})
+      name = opts[:name] || opts["name"]
+      value = opts[:value] || opts["value"]
+
+      return false unless respond_to?(:headers) && Array(headers).any?
+      if name
+        # Find header by name
+        if found = get_header(name)
+          case value
+          when Regexp then found.to_s =~ value
+          when String,Symbol then found.to_s == value.to_s
+          else
+            value.nil? || value == found
+          end
+        else
+          false
+        end
+      elsif value
+        # Find header by value
+        Array(headers).any? do |header|
+          case value
+          when Regexp then header["value"].to_s =~ value
+          when String,Symbol then
+            header["value"].to_s == value.to_s
+          else
+            header["value"] == value
+          end
+        end
+      else
+        Array(headers).any?
+      end
+    end
+    alias :have_header?     :has_header?
+    alias :match_header?    :has_header?
+    alias :matches_header?  :has_header?
+    alias :has_headers?     :has_header?
+    alias :have_headers?    :has_header?
+    alias :match_headers?   :has_header?
+    alias :matches_headers? :has_header?
 
     def get_header(key)
       h = Array(headers).detect do |header|
-        header["name"].to_s.downcase == key.to_s.downcase
+        case key
+        when Regexp then header["name"] =~ key
+        else
+          header["name"].to_s.downcase == key.to_s.downcase
+        end
       end
       h && h["value"]
     end
