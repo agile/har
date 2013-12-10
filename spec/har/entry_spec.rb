@@ -30,7 +30,8 @@ module HAR
       # predicates
       %w[error? client_error? server_error? connection_error?
          redirect? html? image? javascript? css?
-         flash? video? redirected_to
+         flash? video? redirected_to has_header? has_headers?
+         have_header? have_headers?
         ].each do |meth|
         it "should include :#{meth}" do
           entry.should respond_to(meth)
@@ -39,8 +40,9 @@ module HAR
       end
 
       # methods that take arguments
-      [:content_type?, :has_content?, :have_content?,
-       :match_content?, :matches_content?].each do |meth|
+      [:content_type?, :has_content?, :have_content?, :match_content?,
+       :matches_content?, :get_header
+      ].each do |meth|
         it "should include #{meth}" do
           entry.should respond_to(meth)
           entry.send(meth,'video').should == entry.response.send(meth,'video')

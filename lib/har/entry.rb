@@ -8,7 +8,10 @@ module HAR
                                 :html?, :image?, :javascript?, :css?, :flash?,
                                 :video?, :content_type?, :has_content?,
                                 :have_content?, :matches_content?,
-                                :match_content?,  :redirected_to]
+                                :match_content?,  :redirected_to, :get_header,
+                                :has_header?, :has_headers?, :have_header?,
+                                :have_headers?
+    ]
 
     def_delegators :request, *[:url]
     def initialize(input)
