@@ -165,6 +165,21 @@ module HAR
       end
     end
 
+    context "get_header(name)" do
+      before(:each) do
+        headers = [
+          {"name" => "Location", "value" => "http://localhost/"}
+        ]
+        response.stub(:headers).and_return(headers)
+      end
+      it "should return value for matching header" do
+        response.get_header(:location).should == "http://localhost/"
+      end
+      it "should return nil for no matching header" do
+        response.get_header(:nonexistent).should be_nil
+      end
+    end
+
     end
 
     context "redirected_to" do

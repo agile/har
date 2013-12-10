@@ -88,6 +88,14 @@ module HAR
     alias :match_content? :has_content?
     alias :matches_content? :has_content?
 
+
+    def get_header(key)
+      h = Array(headers).detect do |header|
+        header["name"].to_s.downcase == key.to_s.downcase
+      end
+      h && h["value"]
+    end
+
     def redirected_to
       if is_redirect?
         location = Array(headers).detect {|h| h["name"] =~ /location/i }
