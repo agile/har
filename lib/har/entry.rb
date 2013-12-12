@@ -3,14 +3,14 @@ module HAR
   class Entry < SchemaType
     extend Forwardable
 
-    def_delegators :response, *[:error?, :client_error?, :server_error?,
-                                :connection_error?, :redirect?, :content_type?,
-                                :html?, :image?, :javascript?, :css?, :flash?,
-                                :video?, :content_type?, :has_content?,
-                                :have_content?, :matches_content?,
-                                :match_content?,  :redirected_to, :get_header,
-                                :has_header?, :has_headers?, :have_header?,
-                                :have_headers?
+    def_delegators :response, *[:client_error?, :connection_error?,
+                                :content_type?, :css?, :error?, :flash?,
+                                :get_header, :has_content?, :has_header?,
+                                :has_headers?, :have_content?, :have_header?,
+                                :have_headers?, :html?, :image?, :javascript?,
+                                :match_content?, :matches_content?,
+                                :redirect?, :redirected_to, :server_error?,
+                                :video?,
     ]
 
     def_delegators :request, *[:url]
