@@ -81,6 +81,16 @@ module HAR
         response.should have_content_type('text/html')
         response.should be_content_type('text/html')
       end
+      it "should be true given :html and mime type of content is 'text/html'" do
+        response.content.stub(:mime_type).and_return('text/html')
+        response.should have_content_type(:html)
+        response.should be_content_type(:html)
+      end
+      it "should be true given /html/ and mime type of content is 'text/html'" do
+        response.content.stub(:mime_type).and_return('text/html')
+        response.should have_content_type(/html/)
+        response.should be_content_type(/html/)
+      end
     end
 
     context "html?" do

@@ -34,7 +34,12 @@ module HAR
     alias :redirected? :is_redirect?
 
     def is_content_type? type
-      !!content.mime_type.include?(type)
+      case type
+      when Regexp then
+        !!(content.mime_type =~ type)
+      else
+        !!content.mime_type.include?(type.to_s)
+      end
     end
     alias :has_content_type? :is_content_type?
     alias :content_type? :is_content_type?
